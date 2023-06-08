@@ -1,0 +1,12 @@
+/node_modules
+# /artifacts
+/cache
+/deployments
+frontend/src/contracts/*.json
+frontend/src/contracts/hardhat_artifacts
+frontend/src/contracts/stages/hardhat
+gas-report.txt
+.env
+*.bac
+*.log
+.openzeppelin

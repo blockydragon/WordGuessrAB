@@ -1,0 +1,30 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Login</title>
+    <script src="/js/user/loginUser.js"></script>
+</head>
+<body>
+    <h1>Login</h1>
+
+    <form id="login-form">
+        <label for="login-username">Username:</label>
+        <input type="text" id="login-username" required>
+
+        <label for="login-password">Password:</label>
+        <input type="password" id="login-password" required>
+
+        <button type="submit">Login</button>
+    </form>
+<script>
+document.getElementById('login-form').addEventListener('submit', function (event) {
+    event.preventDefault();
+    const username = document.getElementById('login-username').value;
+    const password = document.getElementById('login-password').value;
+    loginUser(username, password);
+});
+</script>
+</body>
+</html>

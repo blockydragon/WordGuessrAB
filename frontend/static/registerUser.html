@@ -1,0 +1,31 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>User Actions</title>
+    <script src="js/user/registerUser.js"></script>
+    <script src="js/user/loginUser.js"></script>
+    <script src="js/user/changePassword.js"></script>
+</head>
+<body>
+    <form id="register-form">
+        <h2>Register</h2>
+        <label for="register-username">Username:</label>
+        <input id="register-username" type="text" required>
+        <label for="register-password">Password:</label>
+        <input id="register-password" type="password" required>
+        <button type="submit">Register</button>
+    </form>
+    <!-- Repeat the same structure for Login and Change Password forms -->
+    <script>
+        document.getElementById('register-form').addEventListener('submit', function (event) {
+            event.preventDefault(); // Prevent the form from refreshing the page
+            const username = document.getElementById('register-username').value;
+            const password = document.getElementById('register-password').value;
+            registerUser(username, password);
+        });
+        // Add similar event listeners for the login and change password forms
+    </script>
+</body>
+</html>
