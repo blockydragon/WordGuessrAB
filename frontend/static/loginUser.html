@@ -4,6 +4,11 @@
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>Login</title>
+    <script src="https://code.jquery.com/jquery-3.6.0.min.js"></script>
+    <link href="https://cdnjs.cloudflare.com/ajax/libs/toastr.js/latest/toastr.min.css" rel="stylesheet"/>
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/toastr.js/latest/toastr.min.js"></script>
+    <script src="https://cdn.jsdelivr.net/npm/axios/dist/axios.min.js"></script>
+
     <script src="/js/user/loginUser.js"></script>
 </head>
 <body>
@@ -19,12 +24,14 @@
         <button type="submit">Login</button>
     </form>
 <script>
-document.getElementById('login-form').addEventListener('submit', function (event) {
+/*document.getElementById('login-form').addEventListener('submit', function (event) {
     event.preventDefault();
     const username = document.getElementById('login-username').value;
     const password = document.getElementById('login-password').value;
     loginUser(username, password);
-});
+});*/
+document.getElementById('login-form').addEventListener('submit', loginUser);
 </script>
+<p>Not a member yet? <a href="registerUser.html"> >>JOIN<< </a></p>
 </body>
 </html>

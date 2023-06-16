@@ -75,7 +75,8 @@ const userController = {
             }
 
             // User is authenticated, create a token
-            const token = jwt.sign({ username }, 'secret', { expiresIn: '1h' });
+	    console.log(existingUser);
+            const token = jwt.sign({ id: existingUser._id, username: username }, 'secret', { expiresIn: '1h' });
 
             res.status(200).send({ token });
         } catch (error) {

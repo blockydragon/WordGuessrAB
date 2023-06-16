@@ -1,20 +1,16 @@
 const Datastore = require('nedb');
+const shortid = require('shortid');
 
 class Game {
     constructor(dbFilePath) {
         this.db = dbFilePath ? new Datastore({ filename: dbFilePath, autoload: true }) : new Datastore();
     }
 
-    createGame(host, word, deadline, gridSize) {
-        const game = {
-            host,
-            word,
-            deadline,
-            gridSize,
-            players: [],
-            // ... add other necessary properties
-        };
+    createGame(gameAdmin, gameLength) {
+        const gameCode = shortid.generate();
+        const game = { _id: gameCode, gameAdmin: gameAdmin, gameLength: gameLength };
 
+	console.log("game: "+JSON.stringify(game));
         return new Promise((resolve, reject) => {
             this.db.insert(game, (err, newDoc) => {
                 if (err) reject(err);
@@ -23,7 +19,70 @@ class Game {
         });
     }
 
-    // Add other necessary methods like adding players to the game, storing guesses etc.
+    findGame(gameCode) {
+        return new Promise((resolve, reject) => {
+            this.db.findOne({ _id: gameCode }, (err, doc) => {
+                if (err) reject(err);
+                resolve(doc);
+            });
+        });
+    }
+
+    updateGame(gameCode, gameData) {
+        return new Promise((resolve, reject) => {
+            this.db.update({ _id: gameCode }, { $set: gameData }, {}, function (err, numReplaced) {
+                if (err) reject(err);
+                resolve(numReplaced > 0); // Return whether the update operation was successful
+            });
+        });
+    }
+
+    removeGame(gameCode) {
+        return new Promise((resolve, reject) => {
+            this.db.remove({ _id: gameCode }, {}, function (err, numRemoved) {
+                if (err) reject(err);
+                resolve(numRemoved > 0); // Return whether the remove operation was successful
+            });
+        });
+    }
+
+    addPlayer(gameCode, userId) {
+	return new Promise((resolve, reject) => {
+    	    this.db.update({ _id: gameCode }, { $push: { players: userId } }, {}, function(err, numReplaced) {
+        	if (err) reject(err);
+        	resolve(numReplaced > 0);
+    	    });
+	});
+    }
+
+    getGameInfo(gameCode) {
+	return new Promise((resolve, reject) => {
+    	    this.db.findOne({ _id: gameCode }, (err, docs) => {
+		console.log("err: "+err);
+		console.log("docs: "+docs);
+        	if (err) reject(err);
+        	resolve(docs);
+    	    });
+	});
+    }
+
+    savePlayerProgress(username, result) {
+	return new Promise((resolve, reject) => {
+    	    this.db.update({ username }, { $push: { progress: result } }, {}, function (err, numReplaced) {
+        	if (err) reject(err);
+        	resolve(numReplaced > 0);
+    	    });
+	});
+    },
+
+    getPlayerProgress(username) {
+	return new Promise((resolve, reject) => {
+    	    this.db.findOne({ username }, (err, docs) => {
+        	if (err) reject(err);
+        	resolve(docs.progress);
+    	    });
+	});
+    }
 }
 
 module.exports = Game;

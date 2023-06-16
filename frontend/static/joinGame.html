@@ -1,0 +1,29 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <title>Join Game</title>
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/axios/0.21.1/axios.min.js"></script>
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/jquery/3.6.0/jquery.min.js"></script>
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/toastr.js/latest/toastr.min.js"></script>
+    <link rel="stylesheet" type="text/css" href="https://cdnjs.cloudflare.com/ajax/libs/toastr.js/latest/toastr.min.css">
+
+    <script src="/js/game/joinGame.js"></script>
+    <script src="/js/game/infoGame.js"></script>
+</head>
+<body>
+    <form id="join-game-form">
+        <label for="game-code">Enter Game Code:</label>
+        <input type="text" id="game-code" name="game-code" required>
+        <button type="submit">Join Game</button>
+	<button type="button" id="info-game-button">Info</button>
+    </form>
+    <div id="game-info"></div>
+    <script>
+	document.getElementById('join-game-form').addEventListener('submit', joinGame);
+	const infoGameButton = document.getElementById('info-game-button');
+	infoGameButton.addEventListener('click',getInfo);
+    </script>
+    <script src="/js/user/checkAuth.js"></script>
+</body>
+</html>

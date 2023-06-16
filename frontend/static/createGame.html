@@ -1,0 +1,23 @@
+<!DOCTYPE html>
+<html>
+<head>
+    <title>Create Game</title>
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/axios/0.21.1/axios.min.js"></script>
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/jquery/3.6.0/jquery.min.js"></script>
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/toastr.js/latest/toastr.min.js"></script>
+    <link rel="stylesheet" type="text/css" href="https://cdnjs.cloudflare.com/ajax/libs/toastr.js/latest/toastr.min.css">
+
+    <script src="/js/game/createGame.js"></script>
+</head>
+<body>
+    <h2>Create Game</h2>
+    <form id="create-game-form">
+        <label for="gameLength">Game Length (minutes):</label>
+        <input type="number" id="gameLength" name="gameLength" min="1" max="10080" required>
+        <button type="submit">Create</button>
+    </form>
+    <h2 id="game-code"> </h2>
+    <script>document.getElementById('create-game-form').addEventListener('submit', createGame);</script>
+    <script src="/js/user/checkAuth.js"></script>
+</body>
+</html>

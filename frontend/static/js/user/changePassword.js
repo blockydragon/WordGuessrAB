@@ -9,7 +9,9 @@ async function changePassword(username, oldPassword, newPassword) {
 
     if (response.ok) {
         // Update the UI to show that the password was changed
+	toastr.success('Password changed!');
     } else {
         // Handle errors
+	toastr.error('Shit happened!');
     }
 }
