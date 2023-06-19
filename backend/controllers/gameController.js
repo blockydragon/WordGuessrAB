@@ -5,7 +5,7 @@ const gameController = {
         const game = new Game('./db/games.db');
         const { gameLength } = req.body;
         const gameAdmin = req.userId;
-
+ 
         try {
             const newGame = await game.createGame(gameAdmin, gameLength);
             res.status(201).send({ gameCode: newGame });

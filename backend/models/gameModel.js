@@ -1,5 +1,6 @@
 const Datastore = require('nedb');
 const shortid = require('shortid');
+const fiveLetterWords = require('../vocabulary/wordList.js');
 
 class Game {
     constructor(dbFilePath) {
@@ -8,7 +9,8 @@ class Game {
 
     createGame(gameAdmin, gameLength) {
         const gameCode = shortid.generate();
-        const game = { _id: gameCode, gameAdmin: gameAdmin, gameLength: gameLength };
+	const secretWord = fiveLetterWords[Math.floor(Math.random() * fiveLetterWords.length)];
+        const game = { _id: gameCode, gameAdmin: gameAdmin, gameLength: gameLength, secretWord: secretWord, players: [], turns: [] };
 
 	console.log("game: "+JSON.stringify(game));
         return new Promise((resolve, reject) => {
