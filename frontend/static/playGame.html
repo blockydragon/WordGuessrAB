@@ -8,16 +8,40 @@
     <script src="https://cdnjs.cloudflare.com/ajax/libs/toastr.js/latest/toastr.min.js"></script>
     <link rel="stylesheet" type="text/css" href="https://cdnjs.cloudflare.com/ajax/libs/toastr.js/latest/toastr.min.css">
     <script src="/js/game/playGame.js"></script>
+    <style>
+        .green {
+	  color: green;
+        }
+
+	.yellow {
+          color: yellow;
+	}
+
+        .grey {
+	  color: grey;
+        }
+  </style>
 </head>
 <body>
     <h1>Wordle Game</h1>
     <div id="game-board"></div>
+    <table id="gameResultsTable">
+      <thead>
+        <tr>
+	  <th>Turn</th>
+          <th colspan="5">Guess</th>
+        </tr>
+      </thead>
+      <tbody id="gameResultsTableBody">
+      </tbody>
+    </table>
     <form id="game-form">
         <input type="text" id="game-input" required>
         <button type="submit">Submit Guess</button>
     </form>
     <script>
 	document.getElementById('game-form').addEventListener('submit', submitGuess);
+	submitGuess();
     </script>
     <script src="/js/user/checkAuth.js"></script>
 </body>

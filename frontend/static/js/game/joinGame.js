@@ -12,8 +12,9 @@ function joinGame(e) {
     .then(response => {
         console.log(response.data);
 	toastr.success("Joined the game");
+	localStorage.setItem('gameCode', gameCode);
         // Navigate to the game page
-        window.location.replace('/game.html');
+        window.location.replace('/playGame.html');
     })
     .catch(error => {
         console.error(error);

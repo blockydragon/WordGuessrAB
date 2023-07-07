@@ -15,7 +15,7 @@ const userController = {
             const newUser = await user.createUser(username, password);
             res.status(201).send({ username: newUser });
         } catch (error) {
-            res.status(500).send(error);
+            res.status(500).send({ message: error });
         }
     },
 
@@ -37,7 +37,7 @@ const userController = {
             await user.changePassword(username, newPassword);
             res.status(200).send({ message: 'Password changed successfully' });
         } catch (error) {
-            res.status(500).send(error);
+            res.status(500).send({ message: error });
         }
     },
 
@@ -54,7 +54,7 @@ const userController = {
             await user.removeUser(username);
             res.status(200).send({ message: 'User removed successfully' });
         } catch (error) {
-            res.status(500).send(error);
+            res.status(500).send({ message: error });
         }
     },
 
@@ -80,7 +80,7 @@ const userController = {
 
             res.status(200).send({ token });
         } catch (error) {
-            res.status(500).send(error);
+            res.status(500).send({ message: error });
         }
     },
 };

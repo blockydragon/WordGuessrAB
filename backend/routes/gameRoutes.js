@@ -10,7 +10,7 @@ router.put('/update', authMiddleware, gameController.updateGame);
 router.delete('/remove', authMiddleware, gameController.removeGame);
 router.post('/join', authMiddleware, gameController.joinGame);
 router.get('/info/:gameCode', gameController.getGameInfo);
-router.post('/play', authMiddleware.verifyToken, gameController.playGame);
-router.get('/progress', authMiddleware.verifyToken, gameController.getPlayerProgress);
+router.post('/play', authMiddleware, gameController.playGame);
+router.get('/progress', authMiddleware, gameController.getPlayerProgress);
 
 module.exports = router;

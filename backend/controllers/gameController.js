@@ -10,7 +10,7 @@ const gameController = {
             const newGame = await game.createGame(gameAdmin, gameLength);
             res.status(201).send({ gameCode: newGame });
         } catch (error) {
-            res.status(500).send(error);
+            res.status(500).send({ message: error });
         }
     },
 
@@ -35,7 +35,7 @@ const gameController = {
     	    res.status(200).send({ message: 'Successfully joined game' });
 	} catch (error) {
 	    console.log(error);
-    	    res.status(500).send(error);
+    	    res.status(500).send({ message: error });
 	}
     },
 
@@ -51,7 +51,7 @@ const gameController = {
     	    }
     	    res.status(200).send(gameInfo);
 	} catch (error) {
-    	    res.status(500).send(error);
+    	    res.status(500).send({ message: error });
 	}
     },
 
@@ -66,7 +66,7 @@ const gameController = {
             }
             res.status(200).send({ game: existingGame });
         } catch (error) {
-            res.status(500).send(error);
+            res.status(500).send({ message: error });
         }
     },
 
@@ -84,7 +84,7 @@ const gameController = {
             await game.updateGame(gameCode, newData);
             res.status(200).send({ message: 'Game updated successfully' });
         } catch (error) {
-            res.status(500).send(error);
+            res.status(500).send({ message: error });
         }
     },
 
@@ -101,21 +101,64 @@ const gameController = {
             await game.removeGame(gameCode);
             res.status(200).send({ message: 'Game removed successfully' });
         } catch (error) {
-            res.status(500).send(error);
+            res.status(500).send({ message: error });
         }
     },
 
     playGame: async (req, res) => {
 	const game = new Game('./db/games.db');
-	const { guess } = req.body;
-	const { username } = req.decoded; // Assuming username is stored in token
+	const userId = req.userId;
+	const { gameCode, guess } = req.body;
 
 	try {
-    	    const result = /* Implement game logic here */;
-    	    await game.savePlayerProgress(username, result);
-    	    res.status(200).send(result);
+	    console.log("gameCode: "+gameCode);
+	    const existingGame = await game.findGame(gameCode);
+	    console.log(JSON.stringify(existingGame));
+            if (!existingGame) {
+	        return res.status(404).send({ message: 'Game not found' });
+    	    }
+
+	    let userTurns = existingGame.turns.filter(turn => turn.userId === userId);
+
+	    if(existingGame.status == 'OVER'){
+		console.log("GAME OVER!");
+		return res.status(200).send({ turns: userTurns, 
+		    status: existingGame.status, winner: existingGame.winner });
+	    }
+
+
+
+            if (userTurns.length >= 6) {
+	        return res.status(400).send({ message: 'No more guesses left for user '+userId, turns: userTurns });
+    	    }
+
+	    if(guess === ''){
+		return res.status(200).send({ turns: userTurns});
+	    }
+
+            if (guess === existingGame.secretWord) {
+		existingGame.status = 'OVER';
+		existingGame.winner = userId;
+		await game.updateGame(gameCode, existingGame);
+	        return res.status(200).send({ message: 'Congratulations! You guessed the word.', turns: userTurns, 
+		    status: existingGame.status, winner: existingGame.winner });
+    	    }
+
+            const result = existingGame.secretWord.split('').map((letter, index) => {
+	        if (letter === guess[index]) return { letter, status: 'green' };
+    	        else if (existingGame.secretWord.includes(guess[index])) return { letter: guess[index], status: 'yellow' };
+        	else return { letter: guess[index], status: 'grey' };
+            });
+
+            existingGame.turns.push({ userId, guess, result });
+
+	    await game.updateGame(gameCode, existingGame);
+//	    await game.savePlayerProgress(username, game);
+	    userTurns = existingGame.turns.filter(turn => turn.userId === userId);
+    	    return res.status(200).send({ turns: userTurns});
 	} catch (error) {
-    	    res.status(500).send(error);
+	    console.log(error);
+    	    return res.status(500).send({ message: error });
 	}
     },
 
@@ -127,7 +170,7 @@ const gameController = {
     	    const progress = await game.getPlayerProgress(username);
     	    res.status(200).send(progress);
 	} catch (error) {
-    	    res.status(500).send(error);
+    	    res.status(500).send({ message: error });
 	}
     }
 };

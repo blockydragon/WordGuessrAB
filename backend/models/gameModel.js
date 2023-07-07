@@ -75,7 +75,7 @@ class Game {
         	resolve(numReplaced > 0);
     	    });
 	});
-    },
+    }
 
     getPlayerProgress(username) {
 	return new Promise((resolve, reject) => {
